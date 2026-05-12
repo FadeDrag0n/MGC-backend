@@ -1,2 +1,15 @@
 .idea/
+# Environment
 .env
+
+# Virtual environment
+.venv/
+venv/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# UV
+uv.lock
