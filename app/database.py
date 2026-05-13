@@ -19,7 +19,7 @@ class Base(DeclarativeBase):
     pass
 
 async def get_db():
-    async with async_sessionmaker() as session:
+    async with async_session_maker() as session:
         try:
             yield session
             await session.commit()

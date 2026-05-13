@@ -1,9 +1,12 @@
 from pydantic_settings import BaseSettings
 from functools import lru_cache
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 class Settings(BaseSettings):
     # App
-    app_name: str = "MGC SHOP"
+    APP_NAME: str = "MGC SHOP"
     DEBUG: bool = False
     SECRET_KEY: str
     ALGORITHM: str = "HS256"
@@ -33,7 +36,7 @@ class Settings(BaseSettings):
     MAX_IMAGE_SIZE_MB: int = 5
 
     class Config:
-        env_file = ".env"
+        env_file = BASE_DIR / ".env"
         case_sensitive = True
         extra = "ignore"
 
