@@ -23,7 +23,9 @@ from app.services.email import (
 from app.models.user import User
 from app.core.config import settings
 from jose import JWTError, jwt
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, field_validator
+from app.utils.validators import validate_password_strength
+
 
 
 router = APIRouter(prefix="/auth", tags=["Auth"])
@@ -48,6 +50,10 @@ class ResetPasswordRequest(BaseModel):
     code: str
     new_password: str
 
+    @field_validator("new_password")
+    @classmethod
+    def validate_new_password(cls, v: str) -> str:
+        return validate_password_strength(v)
 
 @router.post("/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
 async def register(

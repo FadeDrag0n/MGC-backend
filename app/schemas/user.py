@@ -2,6 +2,7 @@ from __future__ import annotations
 from pydantic import BaseModel, EmailStr, field_validator
 from datetime import datetime
 from app.models.user import UserRole
+from app.utils.validators import validate_password_strength
 
 
 class UserBase(BaseModel):
@@ -15,13 +16,8 @@ class UserCreate(UserBase):
     @field_validator("password")
     @classmethod
     def validate_password(cls, v: str) -> str:
-        if len(v) < 8:
-            raise ValueError("password_too_short")
-        if not any(c.isupper() for c in v):
-            raise ValueError("password_no_uppercase")
-        if not any(c.isdigit() for c in v):
-            raise ValueError("password_no_digit")
-        return v
+        return validate_password_strength(v)
+
 
 
 class UserUpdate(BaseModel):
@@ -52,3 +48,12 @@ class UserShortResponse(BaseModel):
     avatar: str | None
 
     model_config = {"from_attributes": True}
+
+class ChangePasswordRequest(BaseModel):
+    old_password: str
+    new_password: str
+
+    @field_validator("new_password")
+    @classmethod
+    def validate_new_password(cls, v: str) -> str:
+        return validate_password_strength(v)
