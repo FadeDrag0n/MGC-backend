@@ -41,5 +41,3 @@ async def update_existing_category(slug: str, data: CategoryUpdate, db: AsyncSes
                dependencies=[Depends(get_current_admin)])
 async def delete_existing_category(slug: str, db: AsyncSession = Depends(get_db)):
     await delete_category(db, slug)
-
-#chill
